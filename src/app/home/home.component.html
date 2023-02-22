@@ -1,0 +1,8 @@
+<button class="btn btn-default" (click)="connectApi()">
+Access IRIS(as OP and RS) directly.
+</button>
+<div *ngIf='iam'>
+<button class="btn btn-default" (click)="connectIAM()">
+Access IRIS(as OP and RS) via KONG(OIDC plugin). Works with IRIS container with IAM.
+</button>	
+</div>

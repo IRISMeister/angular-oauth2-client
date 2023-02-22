@@ -1,0 +1,19 @@
+export const environment = {
+  production: true,
+  auth: {
+    clientId: "EPHI-Wwj_ATOnyBEg5HIBSypqV0fOv38tS_aGAk5gsM",
+    clientSecret: "uNPjHo2O4ozLzNU6UzUx1Otn9ipjFOH9V3LzHVXduN0SNuF5aVtYfvtasGHJrtFRjyu2waAkfC6oCo7N2el6PQ",
+    authUri: 'https://webgw.localdomain/irisauth/authserver/oauth2/authorize',
+    tokenUri: 'https://webgw.localdomain/irisauth/authserver/oauth2/token',
+    redirectUri: 'https://webgw.localdomain/#/callback',
+    scope: 'openid scope1',
+    resourceServerUri: 'https://webgw.localdomain/irisrsc/csp/MYAPP/private',
+    resourceServer2Uri: 'https://webgw.localdomain/irisrsc2/csp/MYAPP/private'
+
+  },
+  iam: {
+    resourceServerInfo: 'https://webgw.localdomain:8443/MYAPP/',
+    resourceServerUri: 'https://webgw.localdomain:8443/MYAPP/public',
+    resourceServer2Uri: 'https://webgw.localdomain:8443/MYAPP2/public'
+  }
+};

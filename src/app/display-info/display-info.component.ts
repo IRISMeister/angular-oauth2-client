@@ -1,0 +1,96 @@
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { TokenService } from '../service/token.service';
+import { environment } from '../../environments/environment';
+import { tap } from 'rxjs/operators';
+import { InfoResponse } from '../models/ResourceServer';
+
+@Component({
+  selector: 'app-display-info',
+  templateUrl: './display-info.component.html',
+  styleUrls: ['./display-info.component.css']
+})
+export class DisplayInfoComponent implements OnInit {
+
+  private accessToken: string;
+  private refreshToken: string;
+  private IdToken: string;
+  private scope: string;
+  
+  public HostName: string;
+  public   UserName: string;
+  public   Status: string;
+  public   TimeStamp: string;
+  public   ResourceName: string;
+
+  constructor(private http: HttpClient,
+              private tokenService: TokenService) {
+    // 保存されたアクセストークンの取得
+    this.accessToken=this.tokenService.getAccessToken();
+    this.refreshToken=this.tokenService.getRefreshToken();
+    this.scope=this.tokenService.getScope();
+  }
+
+  ngOnInit(): void {
+  }
+
+  /**
+   * Resource Server #1にアクセスし、リソース(json)を取得
+   */
+  public AccessRsc1() {
+    const headers = new HttpHeaders(
+      { Authorization: 'Bearer ' + this.accessToken }
+    );
+
+    this.http.get<InfoResponse>(environment.auth.resourceServerUri,{headers})
+    .pipe( 
+      tap((resp) => {
+      })
+    ).subscribe((resp) => {
+      this.HostName = resp.HostName;
+      this.UserName = resp.UserName;
+      this.Status = resp.Status;
+      this.TimeStamp = resp.TimeStamp;
+      this.ResourceName = resp.ResourceName;
+    });
+  }
+
+  /**
+   * Resource Server #2にアクセスし、リソース(json)を取得
+   */
+  public AccessRsc2() {
+    const headers = new HttpHeaders(
+      { Authorization: 'Bearer ' + this.accessToken }
+    );
+
+    this.http.get<InfoResponse>(environment.auth.resourceServer2Uri,{headers})
+    .pipe( 
+      tap((resp) => {
+      })
+      ).subscribe((resp) => {
+        this.HostName = resp.HostName;
+        this.UserName = resp.UserName;
+        this.Status = resp.Status;
+        this.TimeStamp = resp.TimeStamp;
+        this.ResourceName = resp.ResourceName;
+      });
+  }  
+
+  public RefreshToken() {
+    
+    this.tokenService.refreshToken(
+      {
+        refreshToken: this.refreshToken,
+        scope: this.scope
+      }
+    ).subscribe( tokens => {
+        this.accessToken=tokens.access_token;
+        this.IdToken=tokens.id_token;
+        this.refreshToken=tokens.refresh_token;
+      },
+      (err) => console.log('Received an error: ' + err),
+      () => console.log('refresh done')
+    );
+  }
+
+}

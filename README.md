@@ -1,3 +1,19 @@
+# AngularOauth2Client
+
+Angular(SPA)-IRIS(認可サーバ、リソースサーバ)間で[認可コードフロ](https://openid-foundation-japan.github.io/rfc6749.ja.html#grant-code)ーを確認する。
+
+```
+$ git clone https://github.com/IRISMeister/angular-oauth2-client.git
+$ cd angular-oauth2-client/myapp
+$ npm install
+$ ng build --configuration production
+$ cp dist/myapp/* ../../iris-oauth2/htdocs/
+```
+
+# 謝辞
+こちらのサイトを参考にさせていただきました。
+https://qiita.com/okomeme/items/2d8c9481baa66e8821c5
+
 # Myapp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.1.
