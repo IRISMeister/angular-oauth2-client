@@ -8,7 +8,13 @@ $ cd angular-oauth2-client
 $ npm install
 $ ng build --configuration production
 $ cp dist/myapp/* ../../iris-oauth2/htdocs/
+
+or 
+
+$ ./build.sh
 ```
+
+[ng-debug.sh](ng-debug.sh)でAngular組み込みのWebサーバでデバッグ起動します。
 
 # 謝辞
 こちらのサイトを参考にさせていただきました。
