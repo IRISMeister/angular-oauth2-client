@@ -4,7 +4,7 @@ Angular(SPA)-IRIS(認可サーバ、リソースサーバ)間で[認可コード
 
 ```
 $ git clone https://github.com/IRISMeister/angular-oauth2-client.git
-$ cd angular-oauth2-client/myapp
+$ cd angular-oauth2-client
 $ npm install
 $ ng build --configuration production
 $ cp dist/myapp/* ../../iris-oauth2/htdocs/
