@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   auth: {
-    clientId: "EPHI-Wwj_ATOnyBEg5HIBSypqV0fOv38tS_aGAk5gsM",
-    clientSecret: "uNPjHo2O4ozLzNU6UzUx1Otn9ipjFOH9V3LzHVXduN0SNuF5aVtYfvtasGHJrtFRjyu2waAkfC6oCo7N2el6PQ",
+    clientId: "xxxxxxxx",
+    clientSecret: "yyyyyyyy",
     authUri: 'https://webgw.localdomain/irisauth/authserver/oauth2/authorize',
     tokenUri: 'https://webgw.localdomain/irisauth/authserver/oauth2/token',
     redirectUri: 'http://webgw.localdomain:4200/#/callback',
