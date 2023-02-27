@@ -16,6 +16,10 @@ $ ./build.sh
 
 [ng-debug.sh](ng-debug.sh)でAngular組み込みのWebサーバでデバッグ起動します。
 
+# 注意事項
+
+[トークン処理サービス](src/app/service/token.service.ts)で、F5(リロード)対策としてlocalStorageを使用しています。XSS脆弱性に対してご注意ください。
+
 # 謝辞
 こちらのサイトを参考にさせていただきました。
 
