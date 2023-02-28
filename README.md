@@ -14,6 +14,8 @@ or
 $ ./build.sh
 ```
 
+ブラウザで、[Angularアプリケーション](https://webgw.localdomain/)にアクセスします。
+
 [ng-debug.sh](ng-debug.sh)でAngular組み込みのWebサーバでデバッグ起動します。
 
 # 注意事項
