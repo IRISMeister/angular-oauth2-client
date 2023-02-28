@@ -18,6 +18,7 @@ export interface TokenEndPointRequest {
     client_secret: string;
     grant_type: string;
     code: string;
+    code_verifier: string,
     redirect_uri: string;
   }
   

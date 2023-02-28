@@ -11,14 +11,12 @@ import queryString from 'query-string';
   providedIn: 'root'
 })
 export class TokenService {
-  /*
   private access_token: string;
   private id_token: string;
   private refresh_token: string;
   private expires_in: string;
   private scope: string;
   private token_type: string;
-  */
 
   // https://dev-academy.com/angular-jwt/
   constructor(private http: HttpClient) {}
@@ -43,14 +41,12 @@ export class TokenService {
     localStorage.setItem('scope', resp.scope);
     localStorage.setItem('token_type', resp.token_type);
     
-    /*
     this.access_token=resp.access_token;
     this.id_token=resp.id_token;
     this.refresh_token=resp.refresh_token;
     this.expires_in=resp.expires_in;
     this.scope=resp.scope;
     this.token_type=resp.token_type;
-    */
   }
 
   getAccessToken() {
@@ -104,14 +100,17 @@ export class TokenService {
       })
     };    
 
+    const code_verifier: string=sessionStorage.getItem('code_verifier')
+
     const body: TokenEndPointRequest = {
       client_id: environment.auth.clientId,
       client_secret: environment.auth.clientSecret,
       grant_type: 'authorization_code',
       code: token.code,
+      code_verifier: code_verifier,
       redirect_uri: environment.auth.redirectUri
     };
-    sessionStorage.removeItem('code_verifier');
+    sessionStorage.removeItem('code_verifier')
     console.log(body.redirect_uri)
 
     // https://sagatto.com/20200128_query-string_vuejs

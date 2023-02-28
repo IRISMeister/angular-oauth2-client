@@ -24,6 +24,7 @@ $ ./build.sh
 こちらのサイトを参考にさせていただきました。
 
 https://qiita.com/okomeme/items/2d8c9481baa66e8821c5
+https://roytuts.com/angular-okta-sso-single-sign-on-with-pkce/
 
 # Myapp
 
