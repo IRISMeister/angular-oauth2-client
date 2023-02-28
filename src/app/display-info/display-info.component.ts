@@ -19,6 +19,7 @@ export class DisplayInfoComponent implements OnInit {
   
   public HostName: string;
   public   UserName: string;
+  public   sub: string;
   public   Status: string;
   public   TimeStamp: string;
   public   ResourceName: string;
@@ -49,6 +50,7 @@ export class DisplayInfoComponent implements OnInit {
     ).subscribe((resp) => {
       this.HostName = resp.HostName;
       this.UserName = resp.UserName;
+      this.sub = resp.sub;
       this.Status = resp.Status;
       this.TimeStamp = resp.TimeStamp;
       this.ResourceName = resp.ResourceName;
@@ -70,6 +72,7 @@ export class DisplayInfoComponent implements OnInit {
       ).subscribe((resp) => {
         this.HostName = resp.HostName;
         this.UserName = resp.UserName;
+        this.sub = resp.sub;
         this.Status = resp.Status;
         this.TimeStamp = resp.TimeStamp;
         this.ResourceName = resp.ResourceName;
