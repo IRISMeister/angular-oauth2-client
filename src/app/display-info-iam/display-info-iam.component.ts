@@ -17,12 +17,13 @@ export class DisplayInfoIamComponent implements OnInit {
   private state: string;
   public version: string;
 
-  public body: string;
-  public HostName: string;
-  public   UserName: string;
-  public   Status: string;
-  public   TimeStamp: string;
-  public   ResourceName: string;
+  public body: string='';
+  public HostName: string='';
+  public UserName: string='';
+  public sub: string='';
+  public Status: string='';
+  public TimeStamp: string='';
+  public aud: string='';
 
   constructor(private route: ActivatedRoute,private http: HttpClient) {}
 
@@ -82,7 +83,7 @@ export class DisplayInfoIamComponent implements OnInit {
       this.UserName = resp.UserName;
       this.Status = resp.Status;
       this.TimeStamp = resp.TimeStamp;
-      this.ResourceName = resp.ResourceName;
+      this.aud = resp.aud;
     });
   }
 
@@ -97,9 +98,10 @@ export class DisplayInfoIamComponent implements OnInit {
       ).subscribe((resp) => {
         this.HostName = resp.HostName;
         this.UserName = resp.UserName;
+        this.sub = resp.sub;
         this.Status = resp.Status;
         this.TimeStamp = resp.TimeStamp;
-        this.ResourceName = resp.ResourceName;
+        this.aud = resp.aud;
       });
   }  
 }

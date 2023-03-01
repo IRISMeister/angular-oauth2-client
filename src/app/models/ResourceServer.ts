@@ -4,5 +4,5 @@ export interface InfoResponse {
     sub: string;
     Status: string;
     TimeStamp: string;
-    ResourceName: string;
+    aud: string;
   }

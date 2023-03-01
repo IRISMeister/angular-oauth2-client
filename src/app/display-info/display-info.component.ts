@@ -17,12 +17,12 @@ export class DisplayInfoComponent implements OnInit {
   private IdToken: string;
   private scope: string;
   
-  public HostName: string;
-  public   UserName: string;
-  public   sub: string;
-  public   Status: string;
-  public   TimeStamp: string;
-  public   ResourceName: string;
+  public HostName: string='';
+  public UserName: string='';
+  public sub: string='';
+  public Status: string='';
+  public TimeStamp: string='';
+  public aud: string='';
 
   constructor(private http: HttpClient,
               private tokenService: TokenService) {
@@ -53,7 +53,7 @@ export class DisplayInfoComponent implements OnInit {
       this.sub = resp.sub;
       this.Status = resp.Status;
       this.TimeStamp = resp.TimeStamp;
-      this.ResourceName = resp.ResourceName;
+      this.aud = resp.aud;
     });
   }
 
@@ -75,7 +75,7 @@ export class DisplayInfoComponent implements OnInit {
         this.sub = resp.sub;
         this.Status = resp.Status;
         this.TimeStamp = resp.TimeStamp;
-        this.ResourceName = resp.ResourceName;
+        this.aud = resp.aud;
       });
   }  
 

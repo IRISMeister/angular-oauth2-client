@@ -6,7 +6,12 @@ Angular(SPA)-IRIS(認可サーバ、リソースサーバ)間で[認可コード
 $ git clone https://github.com/IRISMeister/angular-oauth2-client.git
 $ cd angular-oauth2-client
 $ npm install
-$ ng build --configuration production
+```
+
+```
+[iris-oauth2のclient/environment.prod.tsをsrc/environments/にコピーする]
+$ cp  ../iris-oauth2/client/environment.prod.ts src/environments/
+$ ng build --configuration production --base-href=/myapp/
 $ cp dist/myapp/* ../../iris-oauth2/htdocs/
 
 or 
@@ -14,7 +19,7 @@ or
 $ ./build.sh
 ```
 
-ブラウザで、[Angularアプリケーション](https://webgw.localdomain/)にアクセスします。
+ブラウザで、[Angularアプリケーション](https://webgw.localdomain/myapp/)にアクセスします。
 
 [ng-debug.sh](ng-debug.sh)でAngular組み込みのWebサーバでデバッグ起動します。
 

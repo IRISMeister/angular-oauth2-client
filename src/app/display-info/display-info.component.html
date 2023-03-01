@@ -1,29 +1,30 @@
-<p>display-info works!</p>
+<p>認証されました</p>
 <button class="btn btn-default" (click)="AccessRsc1()">
-    Access resource server #1
+    リソースサーバ#1にアクセス
 </button>
 <button class="btn btn-default" (click)="AccessRsc2()">
-    Access resource server #2
+    リソースサーバ#2にアクセス
 </button>
 <button class="btn btn-default" (click)="RefreshToken()">
-    Refresh Token
+    アクセストークンの更新
 </button>
 <br/>
+
 <table border="1">
     <tr>
         <th>HostName</th>
         <th>UserName</th>
         <th>sub</th>
+        <th>aud</th>
         <th>Status</th>
         <th>TimeStamp</th>
-        <th>ResourceName</th>
     </tr>
     <tr>
         <td>{{HostName}}</td>
         <td>{{UserName}}</td>
         <td>{{sub}}</td>
+        <td>{{aud}}</td>
         <td>{{Status}}</td>
         <td>{{TimeStamp}}</td>
-        <td>{{ResourceName}}</td>
     </tr>
 </table>
