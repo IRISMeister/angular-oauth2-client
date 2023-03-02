@@ -16,7 +16,7 @@ $ cp dist/myapp/* ../../iris-oauth2/htdocs/
 
 or 
 
-$ ./build.sh
+$ ./build_and_deploy.sh
 ```
 
 ブラウザで、[Angularアプリケーション](https://webgw.localdomain/myapp/)にアクセスします。
