@@ -9,6 +9,7 @@ import { DisplayInfoIamComponent } from './display-info-iam/display-info-iam.com
 import { CallbackComponent } from './callback/callback.component';
 import { DisplayInfoComponent } from './display-info/display-info.component';
 import { provideHttpInterceptors } from './http-interceptors';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { provideHttpInterceptors } from './http-interceptors';
     HomeComponent,
     DisplayInfoIamComponent,
     CallbackComponent,
-    DisplayInfoComponent
+    DisplayInfoComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
