@@ -8,6 +8,9 @@
 <button class="btn btn-default" (click)="RefreshToken()">
     アクセストークンの更新
 </button>
+<button class="btn btn-default" (click)="Logout()">
+    ログアウト
+</button>
 <br/>
 
 <table border="1">
@@ -15,16 +18,14 @@
         <th>HostName</th>
         <th>UserName</th>
         <th>sub</th>
+        <th>exp</th>
         <th>aud</th>
-        <th>Status</th>
-        <th>TimeStamp</th>
     </tr>
     <tr>
         <td>{{HostName}}</td>
         <td>{{UserName}}</td>
         <td>{{sub}}</td>
+        <td>{{exp}}</td>
         <td>{{aud}}</td>
-        <td>{{Status}}</td>
-        <td>{{TimeStamp}}</td>
     </tr>
 </table>

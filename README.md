@@ -32,6 +32,9 @@ $ ./build_and_deploy.sh
 
 https://qiita.com/okomeme/items/2d8c9481baa66e8821c5
 https://roytuts.com/angular-okta-sso-single-sign-on-with-pkce/
+https://manfredsteyer.github.io/angular-oauth2-oidc/docs/index.html
+https://leastprivilege.com/2020/03/31/spas-are-dead/
+https://dangerous-animal141.hatenablog.com/entry/2021/06/08/220637
 
 # Myapp
 

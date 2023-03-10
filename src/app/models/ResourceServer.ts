@@ -5,4 +5,5 @@ export interface InfoResponse {
     Status: string;
     TimeStamp: string;
     aud: string;
+    exp: string;
   }

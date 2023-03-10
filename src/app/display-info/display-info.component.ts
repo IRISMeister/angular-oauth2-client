@@ -23,12 +23,14 @@ export class DisplayInfoComponent implements OnInit {
   public Status: string='';
   public TimeStamp: string='';
   public aud: string='';
+  public exp: string='';
 
   constructor(private http: HttpClient,
               private tokenService: TokenService) {
     // 保存されたアクセストークンの取得
     this.accessToken=this.tokenService.getAccessToken();
     this.refreshToken=this.tokenService.getRefreshToken();
+    this.IdToken=this.tokenService.getIdToken();
     this.scope=this.tokenService.getScope();
   }
 
@@ -54,6 +56,7 @@ export class DisplayInfoComponent implements OnInit {
       this.Status = resp.Status;
       this.TimeStamp = resp.TimeStamp;
       this.aud = resp.aud;
+      this.exp = resp.exp;
     });
   }
 
@@ -76,6 +79,7 @@ export class DisplayInfoComponent implements OnInit {
         this.Status = resp.Status;
         this.TimeStamp = resp.TimeStamp;
         this.aud = resp.aud;
+        this.exp = resp.exp;
       });
   }  
 
@@ -93,6 +97,15 @@ export class DisplayInfoComponent implements OnInit {
       },
       (err) => console.log('Received an error: ' + err),
       () => console.log('refresh done')
+    );
+  }
+
+  public Logout() {
+    
+    this.tokenService.Logout(
+      {
+        IdTokenHint: this.IdToken
+      }
     );
   }
 

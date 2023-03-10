@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable  } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { RefreshTokenRequest,TokenEndPointRequest,TokenEndPointResponse } from '../models/Token';
 import { environment } from '../../environments/environment';
 //import * as queryString from 'query-string';
 import queryString from 'query-string';
+import { WebHttpUrlEncodingCodec } from '../encoder';
 
 @Injectable({
   providedIn: 'root'
@@ -49,11 +50,31 @@ export class TokenService {
     this.token_type=resp.token_type;
   }
 
+  removeTokens() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('expires_in');
+    localStorage.removeItem('scope');
+    localStorage.removeItem('token_type');
+
+    this.access_token=''
+    this.id_token=''
+    this.refresh_token=''
+    this.expires_in=''
+    this.scope=''
+    this.token_type=''
+  }  
+
   getAccessToken() {
     const token = localStorage.getItem('access_token');
     return token;
     //return this.access_token;
-    
+  }  
+  getIdToken() {
+    const token = localStorage.getItem('id_token');
+    return token;
+    //return this.access_token;
   }  
   getRefreshToken() {
     const token = localStorage.getItem('refresh_token');
@@ -90,6 +111,35 @@ export class TokenService {
         this.setTokenInfo(tokens);
       })
     );
+  }
+
+  Logout(token: { IdTokenHint: string }): void {
+    console.log('logout called');
+ 
+    // static values for now...
+    let logoutUrl: string;
+    logoutUrl = 'https://webgw.localdomain/irisauth/authserver/oauth2/logout'
+    let params = new HttpParams({ encoder: new WebHttpUrlEncodingCodec() });
+
+    if (token.IdTokenHint) {
+      params = params.set('id_token_hint', token.IdTokenHint);
+    }
+
+    const postLogoutUrl = 'https://webgw.localdomain/myapp/#/logout'
+    params = params.set('post_logout_redirect_uri', postLogoutUrl);
+
+    const frontchannelLogoutUrl = 'https://webgw.localdomain/myapp/'
+    params = params.set('frontchannel_logout_uri', frontchannelLogoutUrl);
+
+    let state = '12345'
+    params = params.set('state', state);
+
+    logoutUrl=logoutUrl+'?'+params.toString()
+    console.log(logoutUrl)
+
+    // now or later?
+    this.removeTokens()
+    window.location.href=logoutUrl
   }
 
   getAccessTokenFromResponse(token: { code: string }) {
