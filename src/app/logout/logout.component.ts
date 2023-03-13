@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { TokenService } from '../service/token.service';
+import { TokenService } from '../service/token.service'
 
 @Component({
   selector: 'app-logout',

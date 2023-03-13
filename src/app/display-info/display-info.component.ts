@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TokenService } from '../service/token.service';
-import { environment } from '../../environments/environment';
-import { tap } from 'rxjs/operators';
-import { InfoResponse } from '../models/ResourceServer';
+import { Component, OnInit } from '@angular/core'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { TokenService } from '../service/token.service'
+import { environment } from '../../environments/environment'
+import { tap } from 'rxjs/operators'
+import { InfoResponse } from '../models/ResourceServer'
 
 @Component({
   selector: 'app-display-info',
@@ -17,21 +17,21 @@ export class DisplayInfoComponent implements OnInit {
   private refreshToken: string
   private scope: string
   
-  public HostName: string='';
-  public UserName: string='';
-  public sub: string='';
-  public Status: string='';
-  public TimeStamp: string='';
-  public aud: string='';
-  public exp: string='';
+  public HostName: string=''
+  public UserName: string=''
+  public sub: string=''
+  public Status: string=''
+  public TimeStamp: string=''
+  public aud: string=''
+  public exp: string=''
 
   constructor(private http: HttpClient,
               private tokenService: TokenService) {
     // 保存されたアクセストークンの取得
-    this.accessToken=this.tokenService.getAccessToken();
-    this.refreshToken=this.tokenService.getRefreshToken();
-    this.IdToken=this.tokenService.getIdToken();
-    this.scope=this.tokenService.getScope();
+    this.accessToken=this.tokenService.getAccessToken()
+    this.refreshToken=this.tokenService.getRefreshToken()
+    this.IdToken=this.tokenService.getIdToken()
+    this.scope=this.tokenService.getScope()
   }
 
   ngOnInit(): void {
@@ -43,21 +43,21 @@ export class DisplayInfoComponent implements OnInit {
   public AccessRsc1() {
     const headers = new HttpHeaders(
       { Authorization: 'Bearer ' + this.accessToken }
-    );
+    )
 
     this.http.get<InfoResponse>(environment.auth.resourceServerUri,{headers})
     .pipe( 
       tap((resp) => {
       })
     ).subscribe((resp) => {
-      this.HostName = resp.HostName;
-      this.UserName = resp.UserName;
-      this.sub = resp.sub;
-      this.Status = resp.Status;
-      this.TimeStamp = resp.TimeStamp;
-      this.aud = resp.aud;
-      this.exp = resp.exp;
-    });
+      this.HostName = resp.HostName
+      this.UserName = resp.UserName
+      this.sub = resp.sub
+      this.Status = resp.Status
+      this.TimeStamp = resp.TimeStamp
+      this.aud = resp.aud
+      this.exp = resp.exp
+    })
   }
 
   /**
@@ -66,21 +66,21 @@ export class DisplayInfoComponent implements OnInit {
   public AccessRsc2() {
     const headers = new HttpHeaders(
       { Authorization: 'Bearer ' + this.accessToken }
-    );
+    )
 
     this.http.get<InfoResponse>(environment.auth.resourceServer2Uri,{headers})
     .pipe( 
       tap((resp) => {
       })
       ).subscribe((resp) => {
-        this.HostName = resp.HostName;
-        this.UserName = resp.UserName;
-        this.sub = resp.sub;
-        this.Status = resp.Status;
-        this.TimeStamp = resp.TimeStamp;
-        this.aud = resp.aud;
-        this.exp = resp.exp;
-      });
+        this.HostName = resp.HostName
+        this.UserName = resp.UserName
+        this.sub = resp.sub
+        this.Status = resp.Status
+        this.TimeStamp = resp.TimeStamp
+        this.aud = resp.aud
+        this.exp = resp.exp
+      })
   }  
 
   public RefreshToken() {
@@ -91,13 +91,13 @@ export class DisplayInfoComponent implements OnInit {
         scope: this.scope
       }
     ).subscribe( tokens => {
-        this.accessToken=tokens.access_token;
-        this.IdToken=tokens.id_token;
-        this.refreshToken=tokens.refresh_token;
+        this.accessToken=tokens.access_token
+        this.IdToken=tokens.id_token
+        this.refreshToken=tokens.refresh_token
       },
       (err) => console.log('Received an error: ' + err),
       () => console.log('refresh done')
-    );
+    )
   }
 
   public Logout() {
@@ -106,7 +106,7 @@ export class DisplayInfoComponent implements OnInit {
       {
         IdTokenHint: this.IdToken
       }
-    );
+    )
   }
 
 }
