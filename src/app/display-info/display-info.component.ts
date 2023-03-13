@@ -12,10 +12,10 @@ import { InfoResponse } from '../models/ResourceServer';
 })
 export class DisplayInfoComponent implements OnInit {
 
-  private accessToken: string;
-  private refreshToken: string;
-  private IdToken: string;
-  private scope: string;
+  public accessToken: string //表示のためにpublicにしているがprivateのほうが安全
+  public IdToken: string     //表示のためにpublicにしているがprivateのほうが安全
+  private refreshToken: string
+  private scope: string
   
   public HostName: string='';
   public UserName: string='';
