@@ -1,5 +1,6 @@
 import { Component } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
+import { TokenService } from '../service/token.service';
 
 @Component({
   selector: 'app-logout',
@@ -8,10 +9,11 @@ import { ActivatedRoute, Router } from '@angular/router'
 })
 export class LogoutComponent {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private tokenService: TokenService) { }
 
   ngOnInit(): void {
-    this.router.navigate(['/home'])
+    this.tokenService.removeTokens()
+    //this.router.navigate(['/home'])
   }
 
 }

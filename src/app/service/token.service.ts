@@ -116,29 +116,22 @@ export class TokenService {
   Logout(token: { IdTokenHint: string }): void {
     console.log('logout called');
  
-    // static values for now...
     let logoutUrl: string;
-    logoutUrl = 'https://webgw.localdomain/irisauth/authserver/oauth2/logout'
+    logoutUrl = environment.auth.logoutUri
     let params = new HttpParams({ encoder: new WebHttpUrlEncodingCodec() });
 
     if (token.IdTokenHint) {
-      params = params.set('id_token_hint', token.IdTokenHint);
+      params = params.set('id_token_hint', token.IdTokenHint)
     }
+    params = params.set('post_logout_redirect_uri', environment.auth.post_logout_redirect_uri)
+    params = params.set('frontchannel_logout_uri', environment.auth.frontchannel_logout_uri)
 
-    const postLogoutUrl = 'https://webgw.localdomain/myapp/#/logout'
-    params = params.set('post_logout_redirect_uri', postLogoutUrl);
-
-    const frontchannelLogoutUrl = 'https://webgw.localdomain/myapp/'
-    params = params.set('frontchannel_logout_uri', frontchannelLogoutUrl);
-
-    let state = '12345'
-    params = params.set('state', state);
+    //let state = '12345'
+    //params = params.set('state', state);
 
     logoutUrl=logoutUrl+'?'+params.toString()
     console.log(logoutUrl)
 
-    // now or later?
-    this.removeTokens()
     window.location.href=logoutUrl
   }
 
