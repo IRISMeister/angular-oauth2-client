@@ -98,7 +98,7 @@ export class TokenService {
   
     const body: RefreshTokenRequest = {
       client_id: environment.auth.clientId,
-      client_secret: environment.auth.clientSecret,
+      //client_secret: environment.auth.clientSecret,
       refresh_token: token.refreshToken,
       scope: token.scope,
       grant_type: 'refresh_token'

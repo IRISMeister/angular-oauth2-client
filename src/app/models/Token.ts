@@ -4,7 +4,7 @@
  */
 export interface RefreshTokenRequest {
     client_id: string
-    client_secret: string,
+    //client_secret: string,
     refresh_token: string
     scope: string
     grant_type: string
