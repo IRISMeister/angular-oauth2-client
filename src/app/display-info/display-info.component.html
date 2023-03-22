@@ -1,0 +1,57 @@
+<div *ngIf='IsAuthorized; else hideContent'>
+
+<p>認証されました</p>
+<button class="btn btn-default" (click)="AccessRsc1()">
+    リソースサーバ#1にアクセス
+</button>
+<button class="btn btn-default" (click)="AccessRsc2()">
+    リソースサーバ#2にアクセス
+</button>
+<button class="btn btn-default" (click)="RefreshToken()">
+    アクセストークンの更新
+</button>
+<button class="btn btn-default" (click)="Logout()">
+    ログアウト
+</button>
+<br/>
+
+<table border="1">
+    <tr>
+        <th>Item</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>HostName</td><td>{{HostName}}</td>
+    </tr>
+    <tr>
+        <td>UserName</td><td>{{UserName}}</td>
+    </tr>
+    <tr>
+        <td>sub</td><td>{{sub}}</td>
+    </tr>
+    <tr>
+        <td>exp</td><td>{{exp}}</td>
+    </tr>
+    <tr>
+        <td>aud</td><td>{{aud}}</td>
+    </tr>
+    </table>
+
+<table border="1">
+    <tr>
+        <th>Item</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>AT</td><td>{{accessToken}}</td>
+    </tr>
+    <tr>
+        <td>IDT</td><td>{{IdToken}}</td>
+    </tr>
+</table>
+
+</div>
+
+<ng-template #hideContent>
+    <p>認証されていません</p>
+</ng-template>

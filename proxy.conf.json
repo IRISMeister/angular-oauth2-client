@@ -1,0 +1,6 @@
+{
+    "/irisclient": {
+      "target": "https://webgw.localdomain/",
+      "secure": false
+    }
+  }

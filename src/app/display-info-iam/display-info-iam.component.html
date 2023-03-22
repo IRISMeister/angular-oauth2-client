@@ -1,0 +1,27 @@
+<p>display-info-iam works!</p>
+{{version}}<br/>
+<button class="btn btn-default" (click)="AccessRsc1()">
+    Access resource server #1
+</button>
+<button class="btn btn-default" (click)="AccessRsc2()">
+    Access resource server #2
+</button>
+<br/>
+<table border="1">
+    <tr>
+        <th>HostName</th>
+        <th>UserName</th>
+        <th>sub</th>
+        <th>aud</th>
+        <th>Status</th>
+        <th>TimeStamp</th>
+    </tr>
+    <tr>
+        <td>{{HostName}}</td>
+        <td>{{UserName}}</td>
+        <td>{{sub}}</td>
+        <td>{{aud}}</td>
+        <td>{{Status}}</td>
+        <td>{{TimeStamp}}</td>
+    </tr>
+</table>
