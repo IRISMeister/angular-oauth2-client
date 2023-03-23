@@ -1,3 +1,4 @@
+//import { Component } from '@angular/core';
 import { Component } from '@angular/core';
 import { HttpClient,HttpParams,HttpParamsOptions,HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -12,6 +13,14 @@ import { getlourl } from '../models/BFF'
 })
 export class DisplayInfoBffComponent {
 
+  public BFFUserName: string=''
+  public BFFUserRoles: string=''
+  public BFFSessionID: string=''
+  public BFFCSPSessionID: string=''
+  public BFFCounter: number=0
+  public BFFAT: string=''
+  public BFFIDT: string=''
+
   public HostName: string=''
   public UserName: string=''
   public sub: string=''
@@ -21,6 +30,25 @@ export class DisplayInfoBffComponent {
   public exp: string=''
 
   constructor(private http: HttpClient) {
+  }
+  async ngOnInit() {
+
+    // （キャンセルを押されたかもしれないので）実際にログインされたかを問い合わせ。
+    const headers = { 'ContentType': 'application/json' };
+
+    this.http.get<any>(environment.bff.BFFServer+'/getinfo',{ headers })
+    .subscribe({
+      next: (resp) => {
+      this.BFFUserName=resp.UserName
+      this.BFFUserRoles=resp.Roles
+      this.BFFSessionID= resp.SessionID
+      this.BFFCSPSessionID= resp.CSPSessionID
+      this.BFFCounter= resp.Counter
+      this.BFFAT= resp.AT
+      this.BFFIDT= resp.IDT
+      },
+      error: (e) => console.error(e)
+    });
   }
 
   /*
@@ -78,6 +106,17 @@ export class DisplayInfoBffComponent {
 
 
   public RefreshToken() {
-  }
+    const headers = { 'ContentType': 'application/json' };
 
+    this.http.get<any>(environment.bff.BFFServer+'/refresh',{ headers })
+    .subscribe({
+      next: (resp) => {
+        if (resp.IsAuthorized===0) {
+          console.log("Not Authorized")
+        }
+        this.ngOnInit() // redraw screen  
+      },
+      error: (e) => console.error(e)
+    })
+  }
 }

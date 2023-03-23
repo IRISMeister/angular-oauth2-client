@@ -5,11 +5,51 @@
 <button class="btn btn-default" (click)="CallResourceServer(2)">
     リソースサーバ#2にアクセス
 </button>
-<button class="btn btn-default" (click)="Logout()">
+<button class="btn btn-default" (click)="RefreshToken()">
+    トークンの更新
+</button><button class="btn btn-default" (click)="Logout()">
     ログアウト
 </button>
 <br/>
 
+<h2>Info from a BFF server</h2>
+<table border="1">
+    <tr>
+        <th>Item</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>$UserName</td><td>{{BFFUserName}}</td>
+    </tr>
+    <tr>
+        <td>$Roles</td><td>{{BFFUserRoles}}</td>
+    </tr>
+    <tr>
+        <td>SessionID</td><td>{{BFFSessionID}}</td>
+    </tr>
+    <tr>
+        <td>%session.SessionID</td><td>{{BFFCSPSessionID}}</td>
+    </tr>
+    <tr>
+        <td>%session.Data("COUNTER")</td><td>{{BFFCounter}}</td>
+    </tr>
+</table>
+<br/>
+＊AT,IDTは、本来、ユーザエージェントに開示されるべきものではない。
+<table border="1">
+    <tr>
+        <th>Item</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>AT</td><td>{{BFFAT}}</td>
+    </tr>
+    <tr>
+        <td>IDT</td><td>{{BFFIDT}}</td>
+    </tr>
+</table>
+
+<h2>Info from a Resource server</h2>
 <table border="1">
     <tr>
         <th>Item</th>
@@ -19,7 +59,7 @@
         <td>HostName</td><td>{{HostName}}</td>
     </tr>
     <tr>
-        <td>UserName</td><td>{{UserName}}</td>
+        <td>$UserName</td><td>{{UserName}}</td>
     </tr>
     <tr>
         <td>sub</td><td>{{sub}}</td>
