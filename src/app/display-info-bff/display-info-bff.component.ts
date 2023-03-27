@@ -13,6 +13,7 @@ import { getlourl } from '../models/BFF'
 })
 export class DisplayInfoBffComponent {
 
+  public BFFNameSpace: string=''
   public BFFUserName: string=''
   public BFFUserRoles: string=''
   public BFFSessionID: string=''
@@ -39,6 +40,7 @@ export class DisplayInfoBffComponent {
     this.http.get<any>(environment.bff.BFFServer+'/getinfo',{ headers })
     .subscribe({
       next: (resp) => {
+      this.BFFNameSpace=resp.NameSpace
       this.BFFUserName=resp.UserName
       this.BFFUserRoles=resp.Roles
       this.BFFSessionID= resp.SessionID
