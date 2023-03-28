@@ -12,8 +12,8 @@ export const environment =
     "post_logout_redirect_uri":"http://webgw.localdomain:4200/myapp/#/home"
   },
   "rsc":{
-    "resourceServerUri":"https://webgw.localdomain/irisrsc/csp/myapp/private",
-    "resourceServer2Uri":"https://webgw.localdomain/irisrsc2/csp/myapp/private"
+    "resourceServerUri":"https://webgw.localdomain/irisrsc/csp/myrsc/private",
+    "resourceServer2Uri":"https://webgw.localdomain/irisrsc2/csp/myrsc/private"
   },
   "iam":{
     "resourceServerInfo":"https://webgw.localdomain:8443/MYAPP/",
