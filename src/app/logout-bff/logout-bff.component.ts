@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class LogoutBffComponent {
 
   ngOnInit(): void {
+    // sessionIDを取り除きたいがユーザエージェント側では不可能.
     console.log("logout-bff called. Nothing to do")
   }
 
