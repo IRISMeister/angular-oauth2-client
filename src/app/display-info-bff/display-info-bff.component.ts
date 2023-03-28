@@ -1,5 +1,6 @@
 //import { Component } from '@angular/core';
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient,HttpParams,HttpParamsOptions,HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { InfoResponse } from '../models/ResourceServer';
@@ -30,7 +31,9 @@ export class DisplayInfoBffComponent {
   public aud: string=''
   public exp: string=''
 
-  constructor(private http: HttpClient) {
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient) {
   }
   async ngOnInit() {
 
@@ -69,18 +72,39 @@ export class DisplayInfoBffComponent {
     const body = { endpoint: endpoint };
 
     this.http.post<InfoResponse>(environment.bff.BFFServer+'/call', body,{ headers })
-    .pipe( 
-      tap((resp) => {
-      })
-    ).subscribe((resp) => {
-      this.HostName = resp.HostName
-      this.UserName = resp.UserName
-      this.sub = resp.sub
-      this.Status = resp.Status
-      this.TimeStamp = resp.TimeStamp
-      this.aud = resp.aud
-      this.exp = resp.exp
-    });
+    .subscribe({
+      next: (resp) => {
+        this.HostName = resp.HostName
+        this.UserName = resp.UserName
+        this.sub = resp.sub
+        this.Status = resp.Status
+        this.TimeStamp = resp.TimeStamp
+        this.aud = resp.aud
+        this.exp = resp.exp
+      },
+        error: (e) => {
+          console.error(e)
+          alert(e.message)
+      }
+    })
+  }
+
+  public RefreshToken() {
+    const headers = { 'ContentType': 'application/json' };
+
+    this.http.get<any>(environment.bff.BFFServer+'/refresh',{ headers })
+    .subscribe({
+      next: (resp) => {
+        if (resp.IsAuthorized===0) {
+          console.log("Not Authorized")
+        }
+        this.ngOnInit() // redraw screen  
+      },
+      error: (e) => {
+        console.error(e) 
+        alert(e.message)
+      }
+    })
   }
 
   public async Logout() {
@@ -94,31 +118,19 @@ export class DisplayInfoBffComponent {
     .pipe( 
       tap((resp) => {
       })
-    ).subscribe((resp) => {
-      // BFFとOPの間でログイン済み
-      if (resp.IsAuthorized===1) {
-        window.location.href = resp.logoutURL
-        console.log(resp.logoutURL)
-      }
-      else {
-        console.log('nothing to do')
-      }
-    })
-  }
-
-
-  public RefreshToken() {
-    const headers = { 'ContentType': 'application/json' };
-
-    this.http.get<any>(environment.bff.BFFServer+'/refresh',{ headers })
-    .subscribe({
+    ).subscribe({
       next: (resp) => {
-        if (resp.IsAuthorized===0) {
-          console.log("Not Authorized")
+        // BFFとOPの間でログイン済み
+        if (resp.IsAuthorized===1) {
+          window.location.href = resp.logoutURL
+          console.log(resp.logoutURL)
         }
-        this.ngOnInit() // redraw screen  
       },
-      error: (e) => console.error(e)
+      error: (e) => {
+        console.error(e) 
+        alert(e.message)
+        this.router.navigate(['/logout-bff']);      }
     })
   }
+
 }

@@ -1,16 +1,16 @@
 export const environment = 
 {
   "production":"true",
-  "env":"production",
+  "env":"production2",
   "auth":{
     "clientId":"xxxxx",
     "authUri":"https://webgw.localdomain/irisauth/authserver/oauth2/authorize",
     "logoutUri":"https://webgw.localdomain/irisauth/authserver/oauth2/logout",
     "tokenUri":"https://webgw.localdomain/irisauth/authserver/oauth2/token",
-    "redirectUri":"https://webgw.localdomain/myapp/#/callback",
+    "redirectUri":"https://webgw.localdomain/myapp2/#/callback",
     "scope":"openid scope1",
-    "frontchannel_logout_uri":"https://webgw.localdomain/myapp/#/logout",
-    "post_logout_redirect_uri":"https://webgw.localdomain/myapp/#/home"
+    "frontchannel_logout_uri":"https://webgw.localdomain/myapp2/#/logout",
+    "post_logout_redirect_uri":"https://webgw.localdomain/myapp2/#/home"
   },
   "rsc":{
     "resourceServerUri":"https://webgw.localdomain/irisrsc/csp/myapp/private",
@@ -19,10 +19,10 @@ export const environment =
   "iam":{
     "resourceServerInfo":"https://webgw.localdomain:8443/MYAPP/",
     "resourceServerUri":"https://webgw.localdomain:8443/MYAPP/public",
-    "resourceServer2Uri":"https://webgw.localdomain:8443/MYAPP2/public"
+    "resourceServer2Uri":"https://webgw.localdomain:8443/MYAPP/public"
   },
   "bff":{
-    "BFFServer":"/irisclient/csp/bffapi",
-    "redirectUri":"https://webgw.localdomain/myapp/#/callback-bff"
+    "BFFServer":"/irisclient/csp/bff2api",
+    "redirectUri":"https://webgw.localdomain/myapp2/#/callback-bff"
   }
 }
