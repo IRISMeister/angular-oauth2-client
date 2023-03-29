@@ -9,7 +9,7 @@ export interface getauthurl {
     authURL: string
     IsAuthorized: number
 }
-export interface getlourl {
+export interface logout {
     logoutURL: string
     IsAuthorized: number
 }

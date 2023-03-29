@@ -5,7 +5,7 @@ import { HttpClient,HttpParams,HttpParamsOptions,HttpHeaders } from '@angular/co
 import { environment } from '../../environments/environment';
 import { InfoResponse } from '../models/ResourceServer';
 import { tap } from 'rxjs/operators'
-import { getlourl } from '../models/BFF'
+import { logout } from '../models/BFF'
 
 @Component({
   selector: 'app-display-info-bff',
@@ -14,6 +14,7 @@ import { getlourl } from '../models/BFF'
 })
 export class DisplayInfoBffComponent {
 
+  public isAuthorized: number=0
   public BFFNameSpace: string=''
   public BFFUserName: string=''
   public BFFUserRoles: string=''
@@ -22,6 +23,11 @@ export class DisplayInfoBffComponent {
   public BFFCounter: number=0
   public BFFAT: string=''
   public BFFIDT: string=''
+
+  public BFFsub: string=''
+  public BFFname: string=''
+  public BFFpreferred_username: string=''
+  public BFFupdated_at: string=''
 
   public HostName: string=''
   public UserName: string=''
@@ -38,22 +44,35 @@ export class DisplayInfoBffComponent {
   async ngOnInit() {
 
     // （キャンセルを押されたかもしれないので）実際にログインされたかを問い合わせ。
-    const headers = { 'ContentType': 'application/json' };
+    const headers = { 'ContentType': 'application/json' }
 
-    this.http.get<any>(environment.bff.BFFServer+'/getinfo',{ headers })
+    this.http.get<any>(environment.bff.BFFServer+'/getserverinfo',{ headers })
     .subscribe({
       next: (resp) => {
-      this.BFFNameSpace=resp.NameSpace
-      this.BFFUserName=resp.UserName
-      this.BFFUserRoles=resp.Roles
-      this.BFFSessionID= resp.SessionID
-      this.BFFCSPSessionID= resp.CSPSessionID
-      this.BFFCounter= resp.Counter
-      this.BFFAT= resp.AT
-      this.BFFIDT= resp.IDT
+        this.isAuthorized=resp.ServerInfo.isAuthorized
+        this.BFFNameSpace=resp.ServerInfo.NameSpace
+        this.BFFUserName=resp.ServerInfo.UserName
+        this.BFFUserRoles=resp.ServerInfo.Roles
+        this.BFFSessionID= resp.ServerInfo.SessionID
+        this.BFFCSPSessionID= resp.ServerInfo.CSPSessionID
+        this.BFFCounter= resp.ServerInfo.Counter
+        this.BFFAT= resp.ServerInfo.AT
+        this.BFFIDT= resp.ServerInfo.IDT
       },
       error: (e) => console.error(e)
-    });
+    })
+
+    this.http.get<any>(environment.bff.BFFServer+'/userinfo',{ headers })
+    .subscribe({
+      next: (resp) => {
+        this.BFFsub=resp.Userinfo.sub
+        this.BFFname=resp.Userinfo.name
+        this.BFFpreferred_username=resp.Userinfo.preferred_username
+        this.BFFupdated_at=resp.Userinfo.updated_at
+      },
+      error: (e) => console.error(e)
+    })
+    
   }
 
   /*
@@ -68,7 +87,7 @@ export class DisplayInfoBffComponent {
     else if (param===2) {
       endpoint=environment.rsc.resourceServer2Uri
     }
-    const headers = { 'ContentType': 'application/json' };
+    const headers = { 'ContentType': 'application/json' }
     const body = { endpoint: endpoint };
 
     this.http.post<InfoResponse>(environment.bff.BFFServer+'/call', body,{ headers })
@@ -95,9 +114,6 @@ export class DisplayInfoBffComponent {
     this.http.get<any>(environment.bff.BFFServer+'/refresh',{ headers })
     .subscribe({
       next: (resp) => {
-        if (resp.IsAuthorized===0) {
-          console.log("Not Authorized")
-        }
         this.ngOnInit() // redraw screen  
       },
       error: (e) => {
@@ -109,12 +125,12 @@ export class DisplayInfoBffComponent {
 
   public async Logout() {
 
-    const headers = { 'ContentType': 'application/json' };
+    const headers = { 'ContentType': 'application/json' }
     //ログアウト後のRedirect先を指定
     let url=environment.auth.post_logout_redirect_uri
     const body = { postLogoutRedirectURI: url };    
 
-    this.http.post<getlourl>(environment.bff.BFFServer+'/getlourl', body, { headers })
+    this.http.post<logout>(environment.bff.BFFServer+'/logout', body, { headers })
     .pipe( 
       tap((resp) => {
       })
@@ -129,8 +145,23 @@ export class DisplayInfoBffComponent {
       error: (e) => {
         console.error(e) 
         alert(e.message)
-        this.router.navigate(['/logout-bff']);      }
+        this.router.navigate(['/logout-bff'])     
+      }
     })
+  }
+
+  public async Revoke() {
+
+    const headers = { 'ContentType': 'application/json' }
+    this.http.get<any>(environment.bff.BFFServer+'/revocation', { headers })
+    .subscribe({
+      next: (resp) => {
+        //Nothing to do
+      },
+      error: (e) => console.error(e)
+    })
+
+
   }
 
 }

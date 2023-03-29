@@ -1,4 +1,6 @@
-<p>BFF経由で認証されました</p>
+<div *ngIf='isAuthorized; else hideContent'>
+    <p>BFF経由でユーザ{{BFFsub}}({{BFFname}})で認証されました</p>
+
 <button class="btn btn-default" (click)="CallResourceServer(1)">
     リソースサーバ#1にアクセス
 </button>
@@ -9,6 +11,9 @@
     トークンの更新
 </button><button class="btn btn-default" (click)="Logout()">
     ログアウト
+</button>
+<button class="btn btn-default" (click)="Revoke()">
+    トークン取り消し
 </button>
 <br/>
 
@@ -74,3 +79,8 @@
         <td>aud</td><td>{{aud}}</td>
     </tr>
     </table>
+</div>
+<ng-template #hideContent>
+    <p>認証されていません</p>
+    <a routerLink="/home">ホームに戻る</a>
+</ng-template>
