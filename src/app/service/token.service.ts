@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { Observable  } from 'rxjs'
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { tap } from 'rxjs/operators'
-import { RefreshTokenRequest,TokenEndPointRequest,TokenEndPointResponse } from '../models/Token'
+import { RefreshTokenRequest,TokenEndPointRequest,TokenEndPointResponse,UserInfo } from '../models/Token'
 import { environment } from '../../environments/environment'
 //import * as queryString from 'query-string'
 import queryString from 'query-string'
@@ -95,6 +95,16 @@ export class TokenService {
     this.isAuthorized=val
     sessionStorage.setItem('isAuthorized', val)
   } 
+
+  userinfo(): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + this.getAccessToken() 
+      })
+    }    
+  
+    return this.http.get<UserInfo>(environment.auth.userinfoUri,httpOptions)
+  }
 
   refreshToken(token: { refreshToken: string, scope: string }): Observable<TokenEndPointResponse> {
     console.log('RefreshToken called')

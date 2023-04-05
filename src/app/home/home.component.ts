@@ -13,6 +13,7 @@ import { getauthurl,getversion } from '../models/BFF'
 })
 export class HomeComponent implements OnInit {
   public iam:boolean=false
+  public ver:boolean=false
   public version: string=''
 
   constructor(private http: HttpClient, private router: Router) {
@@ -73,15 +74,14 @@ export class HomeComponent implements OnInit {
   }
 
   public async connectBFFTest() {
-    let ver =''
 
     this.http.get<getversion>(environment.bff.BFFServer+'/getversion')
     .pipe( 
       tap((resp) => {
       })
     ).subscribe((resp) => {
-      ver = resp.version
-      console.log(ver)
+      this.version = resp.version
+      this.ver = true
     })
   }
 

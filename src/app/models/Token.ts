@@ -31,3 +31,8 @@ export interface TokenEndPointResponse {
     scope: string
     token_type: string
   }
+
+export interface UserInfo {
+  sub: string
+  name: string
+}

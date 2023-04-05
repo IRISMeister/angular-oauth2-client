@@ -1,18 +1,18 @@
 <div *ngIf='IsAuthorized; else hideContent'>
 
-<p>認証されました</p>
+<p>ユーザ{{userinfosub}}({{userinfoname}})で認証されました</p>
 <button class="btn btn-default" (click)="AccessRsc1()">
     リソースサーバ#1にアクセス
-</button>
+</button>&nbsp;
 <button class="btn btn-default" (click)="AccessRsc2()">
     リソースサーバ#2にアクセス
-</button>
+</button>&nbsp;
 <button class="btn btn-default" (click)="RefreshToken()">
     アクセストークンの更新
-</button>
+</button>&nbsp;
 <button class="btn btn-default" (click)="Logout()">
     ログアウト
-</button>
+</button>&nbsp;
 <br/>
 
 <table border="1">

@@ -26,6 +26,9 @@ export class DisplayInfoComponent implements OnInit {
   public aud: string=''
   public exp: string=''
 
+  public userinfosub: string=''
+  public userinfoname: string=''
+  
   constructor(private http: HttpClient,
               private tokenService: TokenService) {
     // 保存されたアクセストークンの取得
@@ -37,7 +40,17 @@ export class DisplayInfoComponent implements OnInit {
 
   ngOnInit(): void {
     let isauth=this.tokenService.getIsAuthorized()
-    if (isauth==="1") this.IsAuthorized=true
+    if (isauth==="1") {
+      this.IsAuthorized=true
+      this.tokenService.userinfo()
+      .subscribe({
+        next: (userinfo) => {
+          this.userinfosub=userinfo.sub
+          this.userinfoname=userinfo.name
+        },
+        error: (e) => console.error(e)
+      })
+    }
     else this.IsAuthorized=false
   }
 
