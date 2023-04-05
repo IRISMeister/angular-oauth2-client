@@ -7,8 +7,9 @@ export const environment =
     "authUri":"https://webgw.localdomain/irisauth/authserver/oauth2/authorize",
     "logoutUri":"https://webgw.localdomain/irisauth/authserver/oauth2/logout",
     "tokenUri":"https://webgw.localdomain/irisauth/authserver/oauth2/token",
+    "userinfoUri":"https://webgw.localdomain/irisauth/authserver/oauth2/userinfo",
     "redirectUri":"https://webgw.localdomain/myapp2/#/callback",
-    "scope":"openid scope1",
+    "scope":"openid profile scope1",
     "frontchannel_logout_uri":"https://webgw.localdomain/myapp2/#/logout",
     "post_logout_redirect_uri":"https://webgw.localdomain/myapp2/#/home"
   },
