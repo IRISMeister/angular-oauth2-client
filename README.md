@@ -31,7 +31,7 @@ $ ./ng-start.sh
 
 ブラウザで、[Angularアプリケーション](https://webgw.localdomain/myapp/)にアクセスします。
 
-[ng-debug.sh](ng-debug.sh)でAngular組み込みのWebサーバでデバッグ起動します。
+[ng-start.sh](ng-start.sh)でAngular組み込みのWebサーバでデバッグ起動します。
 
 # 注意事項
 
