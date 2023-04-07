@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import {environment} from '../../environments/environment'
 import * as CryptoJS from 'crypto-js'
-import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { tap } from 'rxjs/operators'
-import { ActivatedRoute, Router } from '@angular/router';
-import { getauthurl,getversion } from '../models/BFF'
+import { HttpClient } from '@angular/common/http'
+import { Router } from '@angular/router';
+import { BffService } from '../service/bff.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +15,14 @@ export class HomeComponent implements OnInit {
   public ver:boolean=false
   public version: string=''
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private bffService: BffService ) {
+  }
+
+  ngOnInit(): void {
+    // 8443: kong https port
+    if (window.location.port=='8443') {
+      this.iam=true
+    }
   }
 
   public async connect() {
@@ -52,17 +58,12 @@ export class HomeComponent implements OnInit {
     window.location.href = authUrl
   }
 
-  public async connectBFF() {
-    const headers = { 'ContentType': 'application/json' };
+  public connectBFF() {
     //ログイン後のRedirect先を指定
-    let url=environment.bff.redirectUri
-    
-    const body = { redirectURI: url };    
-    this.http.post<getauthurl>(environment.bff.BFFServer+'/getauthurl',body,{ headers })
-    .pipe( 
-      tap((resp) => {
-      })
-    ).subscribe((resp) => {
+    const body = { redirectURI: environment.bff.redirectUri };    
+
+    this.bffService.getauthurl(body)
+    .subscribe((resp) => {
       // 既にBFFとOPの間でログイン済み
       if (resp.IsAuthorized===1) {
         this.router.navigate(['/info-bff']);
@@ -73,13 +74,9 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  public async connectBFFTest() {
-
-    this.http.get<getversion>(environment.bff.BFFServer+'/getversion')
-    .pipe( 
-      tap((resp) => {
-      })
-    ).subscribe((resp) => {
+  public connectBFFTest() {
+    this.bffService.getversion()
+    .subscribe((resp) => {
       this.version = resp.version
       this.ver = true
     })
@@ -87,13 +84,6 @@ export class HomeComponent implements OnInit {
 
   public async connectIAM() {
     window.location.href = environment.iam.resourceServerUri
-  }
-
-  ngOnInit(): void {
-    // 8443: kong https port
-    if (window.location.port=='8443') {
-      this.iam=true
-    }
   }
 
   private randomStr(length: number) {

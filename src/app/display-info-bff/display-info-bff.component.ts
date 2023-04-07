@@ -1,11 +1,8 @@
 //import { Component } from '@angular/core';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient,HttpParams,HttpParamsOptions,HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { InfoResponse } from '../models/ResourceServer';
-import { tap } from 'rxjs/operators'
-import { logout } from '../models/BFF'
+import { BffService } from '../service/bff.service';
 
 @Component({
   selector: 'app-display-info-bff',
@@ -39,14 +36,11 @@ export class DisplayInfoBffComponent {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient) {
+    private bffService: BffService) {
   }
   async ngOnInit() {
 
-    // （キャンセルを押されたかもしれないので）実際にログインされたかを問い合わせ。
-    const headers = { 'ContentType': 'application/json' }
-
-    this.http.get<any>(environment.bff.BFFServer+'/getserverinfo',{ headers })
+    this.bffService.getserverinfo()
     .subscribe({
       next: (resp) => {
         this.isAuthorized=resp.ServerInfo.isAuthorized
@@ -62,7 +56,7 @@ export class DisplayInfoBffComponent {
       error: (e) => console.error(e)
     })
 
-    this.http.get<any>(environment.bff.BFFServer+'/userinfo',{ headers })
+    this.bffService.userinfo()
     .subscribe({
       next: (resp) => {
         this.BFFsub=resp.Userinfo.sub
@@ -71,14 +65,14 @@ export class DisplayInfoBffComponent {
         this.BFFupdated_at=resp.Userinfo.updated_at
       },
       error: (e) => console.error(e)
-    })
-    
+    })    
+
   }
 
   /*
    * 指定したURLにアクセスし、リソース(json)を取得するようBFFに依頼。
    */
-    public CallResourceServer(param:number) {
+  public CallResourceServer(param:number) {
 
     let endpoint=''
     if (param===1) {
@@ -87,10 +81,9 @@ export class DisplayInfoBffComponent {
     else if (param===2) {
       endpoint=environment.rsc.resourceServer2Uri
     }
-    const headers = { 'ContentType': 'application/json' }
     const body = { endpoint: endpoint };
 
-    this.http.post<InfoResponse>(environment.bff.BFFServer+'/call', body,{ headers })
+    this.bffService.call(body)
     .subscribe({
       next: (resp) => {
         this.HostName = resp.HostName
@@ -109,9 +102,7 @@ export class DisplayInfoBffComponent {
   }
 
   public RefreshToken() {
-    const headers = { 'ContentType': 'application/json' };
-
-    this.http.get<any>(environment.bff.BFFServer+'/refresh',{ headers })
+    this.bffService.refresh()
     .subscribe({
       next: (resp) => {
         this.ngOnInit() // redraw screen  
@@ -123,18 +114,14 @@ export class DisplayInfoBffComponent {
     })
   }
 
-  public async Logout() {
+  public Logout() {
 
-    const headers = { 'ContentType': 'application/json' }
     //ログアウト後のRedirect先を指定
     let url=environment.auth.post_logout_redirect_uri
     const body = { postLogoutRedirectURI: url };    
 
-    this.http.post<logout>(environment.bff.BFFServer+'/logout', body, { headers })
-    .pipe( 
-      tap((resp) => {
-      })
-    ).subscribe({
+    this.bffService.logout(body)
+    .subscribe({
       next: (resp) => {
         // BFFとOPの間でログイン済み
         if (resp.IsAuthorized===1) {
@@ -150,18 +137,13 @@ export class DisplayInfoBffComponent {
     })
   }
 
-  public async Revoke() {
-
-    const headers = { 'ContentType': 'application/json' }
-    this.http.get<any>(environment.bff.BFFServer+'/revocation', { headers })
+  public Revoke() {
+    this.bffService.revoke()
     .subscribe({
       next: (resp) => {
-        //Nothing to do
+      //Nothing to do
       },
       error: (e) => console.error(e)
     })
-
-
   }
-
 }
