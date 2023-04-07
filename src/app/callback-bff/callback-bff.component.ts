@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TokenService } from '../service/token.service';
-import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { BffService } from '../service/bff.service';
 
 @Component({
   selector: 'app-callback-bff',
@@ -14,15 +13,13 @@ export class CallbackBffComponent {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private http: HttpClient,
-              private tokenService: TokenService) { }
+              private bffService: BffService) { }
 
   //ngOnInit(): void {
   async ngOnInit() {
 
     // （キャンセルを押されたかもしれないので）実際にログインされたかを問い合わせ。
-    const headers = { 'ContentType': 'application/json' };
-
-    this.http.get<any>(environment.bff.BFFServer+'/isauth',{ headers })
+    this.bffService.isauth()
     .subscribe((resp) => {
       if (resp.IsAuthorized===0) {
         this.router.navigate(['/home']);
@@ -39,7 +36,7 @@ export class CallbackBffComponent {
     // The redirectURL argument is the URL of the CSP page which should be invoked after the request
     // for the access token is completed and the access token is stored indexed by the ApplicationName and SessionId.
     //
-    // ひとまずcspのsessionIdは使わず(UseSession使わない)、独自のsessionidをBFF側で生成し、httponly,samesite=strickで返す。
+    // CSPのsessionIdは使わず(UseSession使わない)、独自のsessionidをBFF側で生成し、httponly,samesite=strickで返す。
  
     // リソース表示コンポーネントに遷移
     await this.router.navigate(['/info-bff']);
