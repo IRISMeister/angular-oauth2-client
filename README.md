@@ -22,6 +22,10 @@ $ cp dist/myapp/* ../../iris-oauth2/htdocs/
 あるいは
 
 $ ./build_and_deploy.sh
+
+あるいは
+
+$ ./build_and_deploy-docker.sh    (dockerでビルドを行います)
 ```
 
 NGを使用したNon production用の起動方法。
