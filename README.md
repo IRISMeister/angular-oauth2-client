@@ -7,41 +7,150 @@ Angular(SPA)-IRIS(認可サーバ、リソースサーバ)間で[認可コード
 SPAと、SPA+[BFF](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#section-6.2
 )(Backend for Frontend)スタイルの2種類があります。
 
+## SPA(Angular)
+
+F5(リロード)対策としてアクセストークンをsessionStorageに保存しています。XSS脆弱性に対してご注意ください。  
+
+### 導入手順
+
+LinuxあるいはWindowsで実行します。  
+ビルド・実行にはnode, npm, ngが必要です。私の環境は以下の通りです。Windowsでも同じことが出来ます。
+
+> Linuxの場合、(ビルドするだけで、後述のデバッグ環境には向きませんが)Dockerを使用してビルド出来ます。node等のインストールは不要です。
+
+> Windowsの場合、./build_and_deploy.ps1, ng-start.ps1内の$env:gitrootの値を環境にあわせて修正してください。
 ```
-$ git clone https://github.com/IRISMeister/angular-oauth2-client.git
-$ cd angular-oauth2-client
-$ npm install
-```
+$ ng version
+
+Angular CLI: 15.1.6
+Node: 16.16.0
+Package Manager: npm 9.3.0
+OS: linux x64
+
+Angular: 15.1.5
+... animations, common, compiler, compiler-cli, core, forms
+... platform-browser, platform-browser-dynamic, router
+
+Package                         Version
+---------------------------------------------------------
+@angular-devkit/architect       0.1501.6
+@angular-devkit/build-angular   15.1.6
+@angular-devkit/core            15.1.6
+@angular-devkit/schematics      15.1.6
+@angular/cli                    15.1.6
+@schematics/angular             15.1.6
+rxjs                            7.8.0
+typescript                      4.9.5
 
 ```
-[iris-oauth2のclient/environment.prod.tsをsrc/environments/にコピーする]
-$ cp  ../iris-oauth2/client/environment.prod.ts src/environments/
-$ ng build --configuration production --base-href=/myapp/
-$ cp dist/myapp/* ../../iris-oauth2/htdocs/
+下記の手順でビルドしたangularアプリケーションのディストリビューション(./dist/*)を、iris-oauth2のhtdocs/下にコピーすることで使用可能になります。
 
-あるいは
+1. Git Clone
 
-$ ./build_and_deploy.sh
+    カレントディレクトリが./iris-oauth2であることを確認してください。その1階層上のディレクトリに移動して、cloneします。
+    ```bash
+    $ pwd
+    /home/irismeister/git/iris-oauth2
+    $ cd ..
+    $ git clone https://github.com/IRISMeister/angular-oauth2-client.git
+    $ cd angular-oauth2-client
+    ```
+  Dockerを使用してビルドする場合は、下記コマンドを実行してください。2.以降は不要です。
+  ```
+  $ ./build_and_deploy-docker.sh
+  ```
 
-あるいは
+2. 
+    ```bash
+    $ npm install
+    $ ./build_and_deploy.sh   (Windowsの場合は>powershell ./build_and_deploy.ps1)
+    ```
+    このシェルは下記を行います。
+    - client_id, client_secretをサーバ配下のファイル(environment*.ts)から取得  
+    - NGビルド実行。 ターゲットは/myapp/  
+    - htdocs/myapp/以下にビルド成果物をコピー  
+    - NGビルド実行。 ターゲットは/myapp2/  
+    - htdocs/myapp2/以下にビルド成果物をコピー  
 
-$ ./build_and_deploy-docker.sh    (dockerでビルドを行います)
+    下記のように表示されれば成功です。
+    ```bash
+    $ ./build_and_deploy.sh
+    ✔ Browser application bundle generation complete.
+    ✔ Copying assets complete.
+    ✔ Index html generation complete.
+          ・
+          ・
+          ・
+    Build at: 2023-04-05T07:23:58.705Z - Hash: 67aabdbbe8ad0bfa - Time: 6796ms
+    deploying to iris-oauth2
+    done
+    Go to https://webgw.localdomain/myapp/ or https://webgw.localdomain/myapp2/
+    $
+    ```
+
+
+
+以後、iris-oauth2をリビルドするなどで、client_id,client_secretが変更された場合は、build_and_deploy.shを再実行してください。
+
+### 起動方法
+
+こちらはApacheを使用しますので単独の起動方法はありません。サーバ用のコンテナ起動時に自動起動します。
+
+### アクセス方法
+
+---------
+
+|名称|エンドポイント|
+|:--|:--|
+|SPAアプリケーション|[/myapp](https://webgw.localdomain/myapp/)|
+|SPAアプリケーション|[/myapp2](https://webgw.localdomain/myapp2/)|
+
+---------
+
+両者は、client_idが異なる(つまり別のRPとみなす)だけ内容は同じです。下記のような「最高にクール」な画面が表示されます。
+
+![](https://raw.githubusercontent.com/IRISMeister/iris-oauth2/main/docs/images/spa1.png)
+
+「BFF接続テスト」を押すとBFFとの疎通確認を行い、成功の場合IRISバージョンを画面表示します。
+
+「SPAでログイン」を押すと、SPAのみで認証を行います。下記のような画面が表示されれば成功です。適当にボタンを押して(処理内容はボタンが示す通りです)動作確認してください。  
+![](https://raw.githubusercontent.com/IRISMeister/iris-oauth2/main/docs/images/spa2.png)
+
+### 修正・デバッグ
+
+修正・デバッグ目的で、Angular Live Development Serverで起動することができます。
+```
+./ng-start.sh (Windowsの場合は>powershell ./ng-start.ps1)
 ```
 
-NGを使用したNon production用の起動方法。
-```
-$ ./ng-start.sh
-```
+Compiled successfullyという起動メッセージが表示されたら、[Angularアプリケーション(live)](http://webgw.localdomain:4200/myapp)にアクセスします。
 
-ブラウザで、[Angularアプリケーション](https://webgw.localdomain/myapp/)にアクセスします。
+### よくあるエラー
+Unexpected request - client_idと表示される場合、(恐らく)client_idが正しく反映されていません。build_and_deploy.shで直ります。
 
-[ng-start.sh](ng-start.sh)でAngular組み込みのWebサーバでデバッグ起動します。
+### 今後の修正
+今後のドキュメントへの加筆・修正等は[こちら](https://github.com/IRISMeister/angular-oauth2-client)で行います。
 
-# 注意事項
+## SPA(Angular)+REST+BFF
 
-[トークン処理サービス](src/app/service/token.service.ts)で、F5(リロード)対策としてsessionStorageを使用しています。XSS脆弱性に対してご注意ください。
+Webアプリケーションではセッション管理にCSPセッションを使用していますが、SPA+BFFでは独自のセッションを作成しています。  
+> sessionidというクッキー名です。
 
-# コンポーネント追加方法
+SLOが機能します。
+
+### 導入手順
+SPA(Angular)に同梱されています。
+### 起動方法
+SPA(Angular)と同時に起動されます。
+
+### アクセス方法
+SPA(Angular)と同じです。
+
+「SPA+BFFでログイン」を押すと、SPA+BFFで認証を行います。下記のような画面が表示されれば成功です。SPAとほぼ同じですが、こちらにはBFFサーバの情報表示とトークンの取り消し機能が追加されています。    
+![](https://raw.githubusercontent.com/IRISMeister/iris-oauth2/main/docs/images/spa3.png)
+
+## 備忘録
+### コンポーネント追加方法
 ```
 ng generate component mypage
 ```
@@ -56,7 +165,7 @@ import { MypageComponent } from './mypage/mypage.component';
 
 src/app/mypage/mypage.component.tsを実装。
 
-# 謝辞
+## 謝辞
 こちらのサイトを参考にさせていただきました。
 
 https://qiita.com/okomeme/items/2d8c9481baa66e8821c5  
