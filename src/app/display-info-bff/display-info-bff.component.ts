@@ -20,6 +20,7 @@ export class DisplayInfoBffComponent {
   public BFFCounter: number=0
   public BFFAT: string=''
   public BFFIDT: string=''
+  public BFFRFT: string=''
 
   public BFFsub: string=''
   public BFFname: string=''
@@ -52,6 +53,7 @@ export class DisplayInfoBffComponent {
         this.BFFCounter= resp.ServerInfo.Counter
         this.BFFAT= resp.ServerInfo.AT
         this.BFFIDT= resp.ServerInfo.IDT
+        this.BFFRFT= resp.ServerInfo.RFT
       },
       error: (e) => console.error(e)
     })

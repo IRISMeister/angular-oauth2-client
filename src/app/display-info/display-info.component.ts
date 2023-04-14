@@ -15,7 +15,7 @@ export class DisplayInfoComponent implements OnInit {
   public IsAuthorized: boolean=false
   public accessToken: string //表示のためにpublicにしているがprivateのほうが安全
   public IdToken: string     //表示のためにpublicにしているがprivateのほうが安全
-  private refreshToken: string
+  public refreshToken: string
   private scope: string
   
   public HostName: string=''

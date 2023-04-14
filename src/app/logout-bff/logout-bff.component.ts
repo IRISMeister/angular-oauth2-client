@@ -16,7 +16,7 @@ export class LogoutBffComponent {
     console.log("logout-bff called.")
 
     // front channel logoutで呼ばれた際に、sessionIDを取り除きたいが、httponlyなのでユーザエージェント側では不可能。
-    // 下記のBFFエンドポイントで削除する。
+    // 下記のBFFエンドポイントで削除する。本処理は不要？
     const headers = { 'ContentType': 'application/json' }
     this.http.get<any>(environment.bff.BFFServer+'/revocation', { headers })
     .subscribe({
