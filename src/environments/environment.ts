@@ -1,7 +1,9 @@
 export const environment = 
 {
   "production":"false",
+  "env":"debug",
   "auth":{
+    "OP":"iris",
     "clientId":"xxxxx",
     "authUri":"https://webgw.localdomain/irisauth/authserver/oauth2/authorize",
     "logoutUri":"https://webgw.localdomain/irisauth/authserver/oauth2/logout",
