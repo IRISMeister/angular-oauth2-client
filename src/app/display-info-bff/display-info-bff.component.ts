@@ -11,6 +11,7 @@ import { BffService } from '../service/bff.service';
 })
 export class DisplayInfoBffComponent {
 
+  public canRevoke:boolean=false
   public isAuthorized: number=0
   public BFFNameSpace: string=''
   public BFFUserName: string=''
@@ -40,6 +41,9 @@ export class DisplayInfoBffComponent {
     private bffService: BffService) {
   }
   async ngOnInit() {
+    if (environment.auth.OP==='iris') { 
+      this.canRevoke=true
+    }
 
     this.bffService.getserverinfo()
     .subscribe({
@@ -58,6 +62,7 @@ export class DisplayInfoBffComponent {
       error: (e) => console.error(e)
     })
 
+    console.log(this.isAuthorized)
     this.bffService.userinfo()
     .subscribe({
       next: (resp) => {

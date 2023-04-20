@@ -1,6 +1,7 @@
-<button class="btn btn-default" (click)="connect()">
-SPAでログイン
-</button>&nbsp;
+認可サーバ:{{OP}}<br/>
+<div *ngIf='canUseSPA' style="display: inline-block;">
+<button class="btn btn-default" (click)="connect()">SPAでログイン</button>&nbsp;
+</div>
 <button class="btn btn-default" (click)="connectBFF()">
 SPA+BFFでログイン
 </button>&nbsp;

@@ -11,6 +11,8 @@ import { BffService } from '../service/bff.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  public canUseSPA:boolean=false
+  public OP:string=''
   public iam:boolean=false
   public ver:boolean=false
   public version: string=''
@@ -22,6 +24,10 @@ export class HomeComponent implements OnInit {
     // 8443: kong https port
     if (window.location.port=='8443') {
       this.iam=true
+    }
+    this.OP=environment.auth.OP
+    if (this.OP==='iris') { 
+      this.canUseSPA=true
     }
   }
 

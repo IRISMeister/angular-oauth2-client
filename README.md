@@ -128,6 +128,17 @@ Compiled successfullyという起動メッセージが表示されたら、[Angu
 ### よくあるエラー
 Unexpected request - client_idと表示される場合、(恐らく)client_idが正しく反映されていません。build_and_deploy.shで直ります。
 
+ビルド時に下記のようなエラーが出る場合、iris-oauth2のバージョンが古いです。iris-oauth2をgit pullしてビルドしてください。
+```
+$ ./build_and_deploy.sh
+✔ Browser application bundle generation complete.
+
+Error: src/app/display-info-bff/display-info-bff.component.ts:44:26 - error TS2339: Property 'OP' does not exist on type '{ clientId: string; authUri: string; logoutUri: string; tokenUri: string; userinfoUri: string; redirectUri: string; scope: string; frontchannel_logout_uri: string; post_logout_redirect_uri: string; }'.
+
+44     if (environment.auth.OP==='iris') {
+                            ~~
+```
+
 ### 今後の修正
 今後のドキュメントへの加筆・修正等は[こちら](https://github.com/IRISMeister/angular-oauth2-client)で行います。
 

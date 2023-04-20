@@ -1,5 +1,5 @@
 <div *ngIf='isAuthorized; else hideContent'>
-    <p>BFF経由でユーザ{{BFFsub}}({{BFFname}})で認証されました</p>
+    <p>BFF経由でユーザ{{BFFpreferred_username}}({{BFFname}})で認証されました</p>
 
 <button class="btn btn-default" (click)="CallResourceServer(1)">
     リソースサーバ#1にアクセス
@@ -13,9 +13,11 @@
 <button class="btn btn-default" (click)="Logout()">
     ログアウト
 </button>&nbsp;
+<div *ngIf="canRevoke" style="display: inline-block;">
 <button class="btn btn-default" (click)="Revoke()">
     トークン取り消し
 </button>&nbsp;
+</div>
 <br/>
 
 <h2>Info from a BFF server</h2>
