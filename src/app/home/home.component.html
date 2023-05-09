@@ -1,19 +1,22 @@
 認可サーバ:{{OP}}<br/>
-<div *ngIf='canUseSPA' style="display: inline-block;">
-<button class="btn btn-default" (click)="connect()">SPAでログイン</button>&nbsp;
-</div>
-<button class="btn btn-default" (click)="connectBFF()">
-SPA+BFFでログイン
-</button>&nbsp;
-<button class="btn btn-default" (click)="connectBFFTest()">
-BFF接続テスト
-</button>&nbsp;
 		
-<div *ngIf='ver'>
-	{{version}}
-</div>		
-<div *ngIf='iam'>
+<div *ngIf='iam; else NOIAM'>
 	<button class="btn btn-default" (click)="connectIAM()">
-	Access IRIS(as OP and RS) via KONG(OIDC plugin). Works with IRIS container with IAM.
+	KONG(OIDC plugin)でログイン
 	</button>	
 </div>
+
+<ng-template #NOIAM>
+	<div *ngIf='ver'>
+		{{version}}
+	</div>		
+		<div *ngIf='canUseSPA' style="display: inline-block;">
+		<button class="btn btn-default" (click)="connect()">SPAでログイン</button>&nbsp;
+		</div>
+		<button class="btn btn-default" (click)="connectBFF()">
+		SPA+BFFでログイン
+		</button>&nbsp;
+		<button class="btn btn-default" (click)="connectBFFTest()">
+		BFF接続テスト
+		</button>&nbsp;
+</ng-template>

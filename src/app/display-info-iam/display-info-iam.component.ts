@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient,HttpParams,HttpParamsOptions,HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { InfoResponse } from '../models/ResourceServer';
@@ -13,19 +13,19 @@ import { tap } from 'rxjs/operators';
 export class DisplayInfoIamComponent implements OnInit {
 
   // 認可コード
-  private code: string;
-  private state: string;
-  public version: string;
+  private code: string='';
+  private state: string='';
+  public version: string='';
 
-  public body: string='';
-  public HostName: string='';
-  public UserName: string='';
-  public sub: string='';
-  public Status: string='';
-  public TimeStamp: string='';
-  public aud: string='';
+  public HostName: string=''
+  public UserName: string=''
+  public sub: string=''
+  public Status: string=''
+  public TimeStamp: string=''
+  public aud: string=''
+  public exp: string=''
 
-  constructor(private route: ActivatedRoute,private http: HttpClient) {}
+  constructor(private route: ActivatedRoute,private router: Router,private http: HttpClient) {}
 
   ngOnInit() {
       // 認可コード,state取得
@@ -33,18 +33,19 @@ export class DisplayInfoIamComponent implements OnInit {
       this.route.queryParamMap.subscribe( param => {
       this.code = param.get('code');
       this.state = param.get('state');
-      console.log(this.code);
-      console.log(this.state);
+      console.log('code:'+this.code);
+      console.log('state:'+this.state);
     });
 
+    // Resource Server #1にアクセスしoidcのログインを促す。
     this.accessResourceServer();
   }
 
-    /**
-     * Resource Server #1にアクセスしセッションを作成する。そのために初回だけcode,stateを付与する必要がある。
-     * 以降は、KONGが発行するcookie:session(httpOnly)を通じて、クライアント-KONG間のセッションが維持される。
-     */    
-     accessResourceServer() {
+  /**
+   * Resource Server #1にアクセスしセッションを作成する。そのために初回だけcode,stateを付与する必要がある。
+   * 以降は、KONGが発行するcookie:session(httpOnly)を通じて、クライアント-KONG間のセッションが維持される。
+   */    
+  accessResourceServer() {
 /*
       const headers = new HttpHeaders(
         { 'Access-Control-Allow-Origin': '*' ,
@@ -60,7 +61,7 @@ export class DisplayInfoIamComponent implements OnInit {
     const paramsOptions = <HttpParamsOptions>{fromObject: hash};
     const params = new HttpParams(paramsOptions);
 
-    // GET /MYAPP/public?code=xxx&state=yyy
+    // GET /myapp/myrsc/ => GetVersion()が動作する。
     this.http.get(environment.iam.resourceServerInfo, { params: params,responseType: 'text',observe: 'response' })
     .pipe( 
       tap((resp) => {
@@ -75,15 +76,14 @@ export class DisplayInfoIamComponent implements OnInit {
    */
   public AccessRsc1() {
     this.http.get<InfoResponse>(environment.iam.resourceServerUri)
-    .pipe( 
-      tap((resp) => {
-      })
-    ).subscribe((resp) => {
-      this.HostName = resp.HostName;
-      this.UserName = resp.UserName;
-      this.Status = resp.Status;
-      this.TimeStamp = resp.TimeStamp;
-      this.aud = resp.aud;
+    .subscribe((resp) => {
+      this.HostName = resp.HostName
+      this.UserName = resp.UserName
+      this.sub = resp.sub
+      this.Status = resp.Status
+      this.TimeStamp = resp.TimeStamp
+      this.aud = resp.aud
+      this.exp = resp.exp
     });
   }
 
@@ -96,12 +96,26 @@ export class DisplayInfoIamComponent implements OnInit {
       tap((resp) => {
       })
       ).subscribe((resp) => {
-        this.HostName = resp.HostName;
-        this.UserName = resp.UserName;
-        this.sub = resp.sub;
-        this.Status = resp.Status;
-        this.TimeStamp = resp.TimeStamp;
-        this.aud = resp.aud;
+        this.HostName = resp.HostName
+        this.UserName = resp.UserName
+        this.sub = resp.sub
+        this.Status = resp.Status
+        this.TimeStamp = resp.TimeStamp
+        this.aud = resp.aud
+        this.exp = resp.exp
       });
   }  
+
+  public Logout() {
+    
+    this.http.get<InfoResponse>("https://webgw.localdomain:8443/myrsc/logout")
+      .subscribe((resp) => {
+      });
+
+    // somehow logout_redirect_uri seems not working
+    this.router.navigate(['/home'])  
+
+  }
+
+
 }

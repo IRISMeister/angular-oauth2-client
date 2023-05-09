@@ -19,9 +19,9 @@ export const environment =
     "resourceServer2Uri":"https://webgw.localdomain/irisrsc2/csp/myrsc/private"
   },
   "iam":{
-    "resourceServerInfo":"https://webgw.localdomain:8443/MYAPP/",
-    "resourceServerUri":"https://webgw.localdomain:8443/MYAPP/public",
-    "resourceServer2Uri":"https://webgw.localdomain:8443/MYAPP/public"
+    "resourceServerInfo":"https://webgw.localdomain:8443/myrsc/public",
+    "resourceServerUri":"https://webgw.localdomain:8443/myrsc/private",
+    "resourceServer2Uri":"https://webgw.localdomain:8443/myrsc2/private"
   },
   "bff":{
     "BFFServer":"/irisclient/csp/bff2api",
