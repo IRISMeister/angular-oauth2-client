@@ -1,8 +1,9 @@
 #!/bin/bash
 
+docker compose up -d
 docker compose exec node npm install
 
-# assuming you have already cloned iris-oauth2
+# assuming you have already cloned iris-oauth2 and running it.
 cp  ../iris-oauth2/client/environment.prod*.ts src/environments/
 
 docker compose exec node rm -fR dist/myapp/*
@@ -19,3 +20,6 @@ cp -fR dist/myapp/* ../iris-oauth2/htdocs/myapp2/
 
 echo "done"
 echo "Go to https://webgw.localdomain/myapp/ or https://webgw.localdomain/myapp2/"
+
+docker compose down
+
